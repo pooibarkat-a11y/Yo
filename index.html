@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ترتيل - تطبيق القرآن الكريم الذكي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #064e3b;
+      --accent-gold: #d97706;
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 50%, #022c22 100%);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    .container {
+      max-width: 680px;
+      width: 100%;
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      border-radius: 28px;
+      padding: 40px 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(217, 119, 6, 0.15);
+      border: 1px solid var(--accent-gold);
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .app-icon {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      border: 2px solid var(--accent-gold);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #f8fafc;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    p.subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+      text-align: right;
+    }
+    .feature-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 0.9rem;
+    }
+    .feature-card strong {
+      display: block;
+      color: #34d399;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 360px;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: white;
+      text-decoration: none;
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding: 16px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.45);
+    }
+    .info-box {
+      margin-top: 28px;
+      padding: 14px;
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px dashed rgba(217, 119, 6, 0.4);
+      border-radius: 14px;
+      font-size: 0.88rem;
+      color: #fde68a;
+      line-height: 1.6;
+    }
+    footer {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">✨ تطبيق أندرويد متكامل</div>
+    <div class="app-icon">📖</div>
+    <h1>تطبيق ترتيل للقرآن الكريم</h1>
+    <p class="subtitle">تطبيق القرآن الكريم الذكي الشامل — تلاوة بالرسم العثماني، استماع لكبار القراء بدون إنترنت، اختبار الحفظ بالذكاء الاصطناعي، ومساعد قرآني ذكي.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <strong>📖 المصحف الشريف</strong>
+        صفحات مصحف المدينة بالرسم العثماني
+      </div>
+      <div class="feature-card">
+        <strong>🎧 استماع وتنزيل</strong>
+        تنزيل سور وأناشيد للهاتف بدون نت
+      </div>
+      <div class="feature-card">
+        <strong>🎙️ اختبار الحفظ</strong>
+        تسميع وتصحيح ذكي عبر الذكاء الاصطناعي
+      </div>
+      <div class="feature-card">
+        <strong>🕌 أوقات الصلاة</strong>
+        مواقيت دقيقة وقبلة وأذكار يومية
+      </div>
+    </div>
+
+    <a id="download-btn" href="./app-debug.apk" class="cta-btn" download="Tarteel-Quran-App.apk">
+      <span>📥 تنزيل تطبيق أندرويد (APK)</span>
+    </a>
+
+    <div class="info-box">
+      ⚡ <strong>تنبيه للمستخدمين:</strong> يتم بناء ملف الـ APK تلقائياً عبر GitHub Actions عند كل تحديث في المستودع. إذا قمت بتفعيل GitHub Pages من إعدادات المستودع (Pages -> Deploy from branch -> root أو gh-pages)، ستعمل هذه الصفحة مباشرة دون أي خطأ 404!
+    </div>
+  </div>
+
+  <footer>
+    تطبيق ترتيل © 2026 — مصمم بأعلى معايير الجودة والتصميم
+  </footer>
+</body>
+</html>

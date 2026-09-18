@@ -1,0 +1,6 @@
+{
+  "name": "ترتيل",
+  "description": "تطبيق القرآن الكريم الذكي الشامل - تلاوة بالرسم العثماني، استماع لكبار القراء، اختبار الحفظ بالذكاء الاصطناعي، ومساعد قرآني",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="84dp"
+    android:height="84dp"
+    android:viewportWidth="84"
+    android:viewportHeight="84">
+    <!-- Geometric Islamic Star Outer Petals / 8-pointed rosette modern emblem -->
+    <path
+        android:fillColor="#171717"
+        android:pathData="M42,6 C44.5,6 46.5,8 48,11.5 L51,18 L58,16 C61.5,15 64,16.5 65.5,19.5 L68,25 L75,28 C78,29.5 79.5,32 78.5,35.5 L76.5,42.5 L78.5,49.5 C79.5,53 78,55.5 75,57 L68,60 L65.5,65.5 C64,68.5 61.5,70 58,69 L51,67 L48,73.5 C46.5,77 44.5,79 42,79 C39.5,79 37.5,77 36,73.5 L33,67 L26,69 C22.5,70 20,68.5 18.5,65.5 L16,60 L9,57 C6,55.5 4.5,53 5.5,49.5 L7.5,42.5 L5.5,35.5 C4.5,32 6,29.5 9,28 L16,25 L18.5,19.5 C20,16.5 22.5,15 26,16 L33,18 L36,11.5 C37.5,8 39.5,6 42,6 Z" />
+    <!-- Cutout / Emblem Center: Open Holy Quran with Minaret Crescent -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,28 C45,28 50,26 56,24 C57,23.5 58,24.5 58,25.5 L58,47 C52,49 46,50.5 42,53 C38,50.5 32,49 26,47 L26,25.5 C26,24.5 27,23.5 28,24 C34,26 39,28 42,28 Z" />
+    <path
+        android:fillColor="#171717"
+        android:pathData="M42,32 L42,51 C45,49 50,47.5 55,46 L55,27 C50,28.5 45,30 42,32 Z" />
+    <path
+        android:fillColor="#171717"
+        android:pathData="M42,32 L42,51 C39,49 34,47.5 29,46 L29,27 C34,28.5 39,30 42,32 Z" />
+    <!-- Small crescent and star on top -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,21 C43.6,21 45,19.6 45,18 C45,16.4 43.6,15 42,15 C41.3,15 40.7,15.2 40.2,15.6 C41.3,16 42,17 42,18 C42,19 41.3,20 40.2,20.4 C40.7,20.8 41.3,21 42,21 Z" />
+</vector>

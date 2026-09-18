@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ترتيل</string>
+    <string name="tab_home">الرئيسية</string>
+    <string name="tab_quran">المصحف</string>
+    <string name="tab_audio">الاستماع</string>
+    <string name="tab_hifz">الحفظ</string>
+    <string name="tab_more">المزيد</string>
+</resources>
