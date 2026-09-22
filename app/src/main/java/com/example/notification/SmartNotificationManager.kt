@@ -255,14 +255,16 @@ object SmartNotificationManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val currentTimeFormatted = java.text.SimpleDateFormat("hh:mm a", java.util.Locale("ar")).format(java.util.Date())
+
         val notification = NotificationCompat.Builder(context, CHANNEL_PRAYER)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("🕌 حان الآن موعد أذان $prayerName")
-            .setContentText("حيّ على الصلاة، حيّ على الفلاح • $muezzinName")
+            .setContentTitle("🕌 حان وقت الصلاة • صلاة $prayerName")
+            .setContentText("حان وقت صلاة $prayerName الآن ($currentTimeFormatted) • بصوت: $muezzinName")
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
-                    "الله أكبر، الله أكبر.. حان الآن موعد دخول صلاة $prayerName المباركة.\n" +
-                    "بصوت: $muezzinName\n" +
+                    "حان وقت الصلاة! الله أكبر، الله أكبر.. حان الآن موعد دخول أذان صلاة $prayerName المباركة بالساعة ($currentTimeFormatted).\n" +
+                    "المؤذن: $muezzinName\n" +
                     "﴿إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَوْقُوتًا﴾\n" +
                     "حيّ على الصلاة، حيّ على الفلاح."
                 )

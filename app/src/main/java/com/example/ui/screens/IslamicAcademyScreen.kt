@@ -97,14 +97,18 @@ import com.example.data.IslamicQA
 import com.example.data.KidsLesson
 import com.example.data.PillarOfIman
 import com.example.data.PillarOfIslam
+import com.example.data.ProphetHadith
+import com.example.data.ProphetHadithsData
 import com.example.data.ProphetStory
 import com.example.data.QuizQuestion
 import com.example.data.SeerahChapter
+import com.example.ui.theme.QuranFontFamily
 import com.example.viewmodel.AppScreen
 import com.example.viewmodel.AppViewModel
 
 enum class AcademyTab(val title: String, val icon: String) {
     PROPHETS("قصص الأنبياء", "📜"),
+    HADITHS("أحاديث الأنبياء", "💎"),
     SEERAH("السيرة النبوية", "🕌"),
     PILLARS_ISLAM("أركان الإسلام", "🕋"),
     PILLARS_IMAN("أركان الإيمان", "✨"),
@@ -211,6 +215,7 @@ fun IslamicAcademyScreen(
         ) {
             when (selectedTab) {
                 AcademyTab.PROPHETS -> ProphetStoriesView(searchQuery = searchQuery, onSearchChange = { searchQuery = it })
+                AcademyTab.HADITHS -> ProphetHadithsView(searchQuery = searchQuery, onSearchChange = { searchQuery = it })
                 AcademyTab.SEERAH -> SeerahChaptersView()
                 AcademyTab.PILLARS_ISLAM -> PillarsOfIslamView()
                 AcademyTab.PILLARS_IMAN -> PillarsOfImanView()
@@ -513,6 +518,84 @@ fun ProphetStoryCard(story: ProphetStory) {
                         )
                     }
                 }
+
+                // Authentic Hadiths related to this Prophet
+                val prophetHadiths = remember(story.id) {
+                    ProphetHadithsData.getHadithsForProphet(story.id)
+                }
+                if (prophetHadiths.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Surface(
+                        shape = RoundedCornerShape(14.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.20f),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(14.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "💎", fontSize = 18.sp)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "أحاديث نبوية صحيحة من المصادر المعتمدة:",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            prophetHadiths.forEach { hadith ->
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = MaterialTheme.colorScheme.surface,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp)
+                                ) {
+                                    Column(modifier = Modifier.padding(10.dp)) {
+                                        Text(
+                                            text = "« ${hadith.hadithArabic} »",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontFamily = QuranFontFamily,
+                                            lineHeight = 25.sp,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = "رواه ${hadith.rawi}",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                            Surface(
+                                                shape = RoundedCornerShape(6.dp),
+                                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                                            ) {
+                                                Text(
+                                                    text = hadith.sourceBook,
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "💡 الفائدة: ${hadith.explanation}",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            lineHeight = 18.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -572,6 +655,247 @@ fun ProphetStoryCard(story: ProphetStory) {
         }
     }
 }
+}
+
+// =================================================================================================
+// 1.5 أحاديث الأنبياء من المصادر الموثوقة
+// =================================================================================================
+@Composable
+fun ProphetHadithsView(
+    searchQuery: String,
+    onSearchChange: (String) -> Unit
+) {
+    val hadiths = remember(searchQuery) {
+        if (searchQuery.isBlank()) {
+            ProphetHadithsData.allHadiths
+        } else {
+            ProphetHadithsData.allHadiths.filter {
+                it.prophetName.contains(searchQuery, ignoreCase = true) ||
+                        it.hadithArabic.contains(searchQuery, ignoreCase = true) ||
+                        it.sourceBook.contains(searchQuery, ignoreCase = true) ||
+                        it.explanation.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        item {
+            // Header Info Card
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "💎", fontSize = 28.sp)
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = "أحاديث الأنبياء من المصادر الموثوقة",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = "مجموعة مختارة مخرجة ومحققة من صحيح البخاري، صحيح مسلم، والسنن المعتمدة",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = onSearchChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("hadith_search_field"),
+                placeholder = { Text("ابحث عن حديث أو اسم نبي أو كتاب تخريج...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { onSearchChange("") }) {
+                            Icon(Icons.Default.Clear, contentDescription = "مسح")
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(14.dp)
+            )
+        }
+
+        items(hadiths) { hadith ->
+            HadithCard(hadith = hadith)
+        }
+    }
+}
+
+@Composable
+fun HadithCard(hadith: ProphetHadith) {
+    val context = LocalContext.current
+
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("hadith_card_${hadith.prophetId}")
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header: Prophet Name & Source Badge
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Surface(
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Text(text = "📜", fontSize = 18.sp)
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = hadith.prophetName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f)
+                ) {
+                    Text(
+                        text = hadith.sourceBook,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Hadith Text with QuranFontFamily (Amiri)
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text(
+                        text = "« ${hadith.hadithArabic} »",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontFamily = QuranFontFamily,
+                        lineHeight = 28.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "— رواه ${hadith.rawi} [${hadith.hadithNumberOrRef}]",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Explanation / Benefit
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(text = "💡 ", fontSize = 14.sp)
+                    Text(
+                        text = hadith.explanation,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Action Buttons (Copy & Share)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {
+                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText(
+                            "حديث نبوي",
+                            "${hadith.prophetName}:\n«${hadith.hadithArabic}»\nرواه ${hadith.rawi} (${hadith.sourceBook} - ${hadith.hadithNumberOrRef})"
+                        )
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(context, "تم نسخ الحديث الشريف", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier.testTag("copy_hadith_${hadith.prophetId}")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "نسخ الحديث",
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "حديث عن ${hadith.prophetName}:\n«${hadith.hadithArabic}»\nرواه ${hadith.rawi} [${hadith.sourceBook} - ${hadith.hadithNumberOrRef}]\nالفائدة: ${hadith.explanation}"
+                            )
+                        }
+                        context.startActivity(Intent.createChooser(intent, "مشاركة الحديث الشريف"))
+                    },
+                    modifier = Modifier.testTag("share_hadith_${hadith.prophetId}")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "مشاركة الحديث",
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+        }
+    }
 }
 
 // =================================================================================================

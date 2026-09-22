@@ -50,7 +50,15 @@ class AdhanAlarmReceiver : BroadcastReceiver() {
                     muezzinId = muezzin.id
                 )
 
-                // Also send a high-priority system heads-up notification
+                // Speak voice reminder: "حان وقت الصلاة..." if pre-prayer/voice reminder is active
+                if (PrePrayerReminderHelper.isVoiceEnabled(context)) {
+                    PrePrayerReminderHelper.speakArabicText(
+                        context,
+                        PrePrayerReminderHelper.getPrayerTimeSpokenPhrase(prayerName)
+                    )
+                }
+
+                // Also send a high-priority system heads-up notification with exact time
                 SmartNotificationManager.sendPrayerTimeNotification(
                     context = context,
                     prayerName = prayerName,

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تطبيق ترتيل للقرآن الكريم والأكاديمية الإسلامية</title>
+  <!-- Google Fonts: Cairo & Amiri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #064e3b;
+      --primary-light: #10b981;
+      --accent-gold: #d97706;
+      --accent-gold-light: #fbbf24;
+      --bg-dark: #08111b;
+      --card-bg: #111f30;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background: linear-gradient(160deg, #04241e 0%, #08111b 45%, #031c17 100%);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Header */
+    header {
+      background: rgba(17, 31, 48, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(217, 119, 6, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 20px;
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary) 0%, #047857 100%);
+      border: 2px solid var(--accent-gold);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .logo-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    /* Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      background: rgba(8, 17, 27, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .view-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Search Box */
+    .search-box {
+      width: 100%;
+      background: rgba(17, 31, 48, 0.9);
+      border: 1px solid var(--card-border);
+      padding: 12px 18px;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box:focus {
+      border-color: var(--primary-light);
+    }
+    /* Cards Grid */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .item-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .item-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .badge-id {
+      background: rgba(5, 150, 105, 0.15);
+      border: 1px solid rgba(5, 150, 105, 0.3);
+      color: var(--primary-light);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-source {
+      background: rgba(217, 119, 6, 0.15);
+      border: 1px solid rgba(217, 119, 6, 0.3);
+      color: var(--accent-gold-light);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      font-size: 1.25rem;
+      line-height: 1.9;
+      color: #f1f5f9;
+      background: rgba(8, 17, 27, 0.4);
+      padding: 14px;
+      border-radius: 12px;
+      margin: 10px 0;
+      border-right: 3px solid var(--accent-gold);
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 12px;
+      margin-top: 6px;
+    }
+    .card-meta {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    /* Action Buttons */
+    .btn-action {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-action:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+    /* Audio Player Sticky Bar */
+    .audio-bar {
+      position: sticky;
+      bottom: 16px;
+      margin: 0 auto;
+      max-width: 600px;
+      background: rgba(17, 31, 48, 0.95);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(5, 150, 105, 0.4);
+      border-radius: 18px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 99;
+    }
+    .audio-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .audio-icon {
+      font-size: 24px;
+    }
+    .audio-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .audio-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    audio {
+      height: 36px;
+      max-width: 260px;
+      outline: none;
+    }
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-dark);
+      border: 1px solid var(--accent-gold);
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1000;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo-area">
+        <div class="logo-icon">📖</div>
+        <div class="logo-text">
+          <h1>تطبيق ترتيل الذكي</h1>
+          <p>القرآن الكريم والأكاديمية الإسلامية</p>
+        </div>
+      </a>
+      <div class="tabs-bar">
+        <button class="tab-btn active" onclick="switchTab('quran')">📖 القرآن الكريم</button>
+        <button class="tab-btn" onclick="switchTab('hadiths')">💎 أحاديث الأنبياء</button>
+        <button class="tab-btn" onclick="switchTab('prophets')">📜 قصص الأنبياء</button>
+        <button class="tab-btn" onclick="switchTab('nasheeds')">🎵 الأناشيد والصوتيات</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- 1. TAB: QURAN SURAHS -->
+    <div id="tab-quran" class="view-panel active">
+      <input type="text" class="search-box" id="quran-search" placeholder="🔍 ابحث عن سورة بالاسم (الفاتحة، البقرة...) أو برقمها..." onkeyup="filterQuran()">
+      <div class="grid-cards" id="quran-list"></div>
+    </div>
+
+    <!-- 2. TAB: PROPHET HADITHS -->
+    <div id="tab-hadiths" class="view-panel">
+      <input type="text" class="search-box" id="hadiths-search" placeholder="🔍 ابحث في أحاديث الأنبياء (اسم النبي، المتن، أو المصدر كالبخاري ومسلم)..." onkeyup="filterHadiths()">
+      <div class="grid-cards" id="hadiths-list"></div>
+    </div>
+
+    <!-- 3. TAB: PROPHET STORIES -->
+    <div id="tab-prophets" class="view-panel">
+      <input type="text" class="search-box" id="prophets-search" placeholder="🔍 ابحث في قصص الأنبياء والعبر القرآنية..." onkeyup="filterProphets()">
+      <div class="grid-cards" id="prophets-list"></div>
+    </div>
+
+    <!-- 4. TAB: NASHEEDS & AUDIO -->
+    <div id="tab-nasheeds" class="view-panel">
+      <div class="grid-cards" id="nasheeds-list"></div>
+    </div>
+
+  </main>
+
+  <!-- Sticky Audio Player Bar -->
+  <div class="audio-bar" id="audio-bar" style="display: none;">
+    <div class="audio-info">
+      <span class="audio-icon">🎧</span>
+      <div>
+        <div class="audio-title" id="audio-title">اسم الصوت</div>
+        <div class="audio-subtitle" id="audio-sub">قارئ / منشد</div>
+      </div>
+    </div>
+    <audio id="global-player" controls autoplay></audio>
+  </div>
+
+  <div id="toast" class="toast">تم النسخ بنجاح!</div>
+
+  <footer>
+    تطبيق ترتيل © 2026 — مصمم بأحدث التقنيات وأصح المصادر المعتمدة
+  </footer>
+
+  <script>
+    // ----------------------------------------------------
+    // 1. DATA: Quran Surahs (114 Surahs Sample & Core)
+    // ----------------------------------------------------
+    const surahs = [
+      { id: 1, name: "الفاتحة", en: "Al-Fatihah", verses: 7, type: "مكية", page: 1, audioUrl: "https://server8.mp3quran.net/afs/001.mp3" },
+      { id: 2, name: "البقرة", en: "Al-Baqarah", verses: 286, type: "مدنية", page: 2, audioUrl: "https://server8.mp3quran.net/afs/002.mp3" },
+      { id: 3, name: "آل عمران", en: "Aal-Imran", verses: 200, type: "مدنية", page: 50, audioUrl: "https://server8.mp3quran.net/afs/003.mp3" },
+      { id: 4, name: "النساء", en: "An-Nisa", verses: 176, type: "مدنية", page: 77, audioUrl: "https://server8.mp3quran.net/afs/004.mp3" },
+      { id: 5, name: "المائدة", en: "Al-Ma'idah", verses: 120, type: "مدنية", page: 106, audioUrl: "https://server8.mp3quran.net/afs/005.mp3" },
+      { id: 6, name: "الأنعام", en: "Al-An'am", verses: 165, type: "مكية", page: 128, audioUrl: "https://server8.mp3quran.net/afs/006.mp3" },
+      { id: 18, name: "الكهف", en: "Al-Kahf", verses: 110, type: "مكية", page: 293, audioUrl: "https://server8.mp3quran.net/afs/018.mp3" },
+      { id: 19, name: "مريم", en: "Maryam", verses: 98, type: "مكية", page: 305, audioUrl: "https://server8.mp3quran.net/afs/019.mp3" },
+      { id: 20, name: "طه", en: "Ta-Ha", verses: 135, type: "مكية", page: 312, audioUrl: "https://server8.mp3quran.net/afs/020.mp3" },
+      { id: 21, name: "الأنبياء", en: "Al-Anbiya", verses: 112, type: "مكية", page: 322, audioUrl: "https://server8.mp3quran.net/afs/021.mp3" },
+      { id: 36, name: "يس", en: "Ya-Sin", verses: 83, type: "مكية", page: 440, audioUrl: "https://server8.mp3quran.net/afs/036.mp3" },
+      { id: 55, name: "الرحمن", en: "Ar-Rahman", verses: 78, type: "مدنية", page: 531, audioUrl: "https://server8.mp3quran.net/afs/055.mp3" },
+      { id: 56, name: "الواقعة", en: "Al-Waqi'ah", verses: 96, type: "مكية", page: 534, audioUrl: "https://server8.mp3quran.net/afs/056.mp3" },
+      { id: 67, name: "الملك", en: "Al-Mulk", verses: 30, type: "مكية", page: 562, audioUrl: "https://server8.mp3quran.net/afs/067.mp3" },
+      { id: 112, name: "الإخلاص", en: "Al-Ikhlas", verses: 4, type: "مكية", page: 604, audioUrl: "https://server8.mp3quran.net/afs/112.mp3" },
+      { id: 113, name: "الفلق", en: "Al-Falaq", verses: 5, type: "مكية", page: 604, audioUrl: "https://server8.mp3quran.net/afs/113.mp3" },
+      { id: 114, name: "الناس", en: "An-Nas", verses: 6, type: "مكية", page: 604, audioUrl: "https://server8.mp3quran.net/afs/114.mp3" }
+    ];
+
+    // ----------------------------------------------------
+    // 2. DATA: Authentic Prophet Hadiths
+    // ----------------------------------------------------
+    const hadiths = [
+      {
+        prophet: "سيدنا آدم عليه السلام",
+        text: "خَلَقَ اللَّهُ آدَمَ علَى صُورَتِهِ، طُولُهُ سِتُّونَ ذِرَاعًا، فَلَمَّا خَلَقَهُ قالَ: اذْهَبْ فَسَلِّمْ علَى أُولَئِكَ النَّفَرِ مِنَ المَلائِكَةِ جُلُوسٌ، فَاسْتَمِعْ ما يُحَيُّونَكَ، فإنَّها تَحِيَّتُكَ وتَحِيَّةُ ذُرِّيَّتِكَ.",
+        rawi: "أبو هريرة رضي الله عنه",
+        source: "صحيح البخاري (٦٢٢٧) ومسلم (٢٨٤١)",
+        benefit: "بيان أصل خلق البشرية وسنة إفشاء السلام من أول لحظة خلق فيها آدم."
+      },
+      {
+        prophet: "سيدنا نوح عليه السلام",
+        text: "يُدْعَى نُوحٌ يَومَ القِيَامَةِ فيَقولُ: لَبَّيْكَ وسَعْدَيْكَ يا رَبِّ، فيَقولُ: هلْ بَلَّغْتَ؟ فيَقولُ: نَعَمْ... فيَقولُ: مَن يَشْهَدُ لَكَ؟ فيَقولُ: مُحَمَّدٌ وأُمَّتُهُ، فَتَشْهَدُونَ أنَّه قدْ بَلَّغَ.",
+        rawi: "أبو سعيد الخدري رضي الله عنه",
+        source: "صحيح البخاري (٤٤٨٧)",
+        benefit: "شهادة أمة محمد ﷺ لنوح عليه السلام يوم القيامة بتمام البلاغ والصبر."
+      },
+      {
+        prophet: "سيدنا إبراهيم عليه السلام",
+        text: "إنَّ أوَّلَ النَّاسِ يُكْسَى يَومَ القِيَامَةِ إبْرَاهِيمُ صَلَّى اللَّهُ عليه وسلَّمَ.",
+        rawi: "عبد الله بن عباس رضي الله عنهما",
+        source: "صحيح البخاري (٣٣٤٩) ومسلم (٢٨٦٠)",
+        benefit: "كرامة خليل الرحمن إبراهيم جزاء ما جُرد من ثيابه لنصرة التوحيد حين أُلقي في النار."
+      },
+      {
+        prophet: "سيدنا يوسف عليه السلام",
+        text: "الكَرِيمُ ابْنُ الكَرِيمِ، ابْنِ الكَرِيمِ، ابْنِ الكَرِيمِ: يُوسُفُ بنُ يَعْقُوبَ بنِ إسْحَاقَ بنِ إبْرَاهِيمَ عليهمُ السَّلَامُ.",
+        rawi: "عبد الله بن عمر رضي الله عنهما",
+        source: "صحيح البخاري (٣٣٩٠)",
+        benefit: "سلسلة الشرف والكرامة النبوية المباركة المتصلة أباً عن جد."
+      },
+      {
+        prophet: "سيدنا موسى عليه السلام",
+        text: "لا تُخَيِّرُوني علَى مُوسَى؛ فإنَّ النَّاسَ يَصْعَقُونَ يَومَ القِيَامَةِ، فأَصْعَقُ معهُمْ، فأكُونُ أوَّلَ مَن يُفِيقُ، فإذا مُوسَى بَاطِشٌ بجَانِبِ العَرْشِ.",
+        rawi: "أبو هريرة وأبو سعيد الخدري",
+        source: "صحيح البخاري (٢٤١١) ومسلم (٢٣٧٣)",
+        benefit: "بيان جلالة قدر كليم الله موسى عليه السلام وتواضع النبي ﷺ معه."
+      },
+      {
+        prophet: "سيدنا داود عليه السلام",
+        text: "أَحَبُّ الصَّلَاةِ إلى اللَّهِ صَلَاةُ دَاوُدَ، وأَحَبُّ الصِّيَامِ إلى اللَّهِ صِيَامُ دَاوُدَ؛ كانَ يَنَامُ نِصْفَ اللَّيْلِ ويقومُ ثُلُثَهُ، ويَنَامُ سُدُسَهُ، ويَصُومُ يَوْمًا ويُفْطِرُ يَوْمًا.",
+        rawi: "عبد الله بن عمرو رضي الله عنهما",
+        source: "صحيح البخاري (١١٣١) ومسلم (١١٥٩)",
+        benefit: "أفضل هدي وتوازن في العبادة والجهاد والعمل الحرفي."
+      },
+      {
+        prophet: "سيدنا يونس عليه السلام",
+        text: "دَعْوَةُ ذِي النُّونِ إذْ دَعا وهو في بَطْنِ الحُوتِ: {لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ}؛ لم يَدْعُ بها رجُلٌ مُسْلِمٌ في شَيءٍ قَطُّ إلَّا اسْتَجابَ اللهُ له.",
+        rawi: "سعد بن أبي وقاص رضي الله عنه",
+        source: "سنن الترمذي (٣٥٠٥) وصححه الألباني",
+        benefit: "دعاء الكرب والفرج الذي نجى الله به يونس من ظلمات البحر وبطن الحوت."
+      },
+      {
+        prophet: "سيدنا عيسى ابن مريم عليه السلام",
+        text: "أَنَا أَوْلَى النَّاسِ بعِيسَى ابْنِ مَرْيَمَ في الدُّنْيَا وَالآخِرَةِ، وَالأَنْبِيَاءُ إخْوَةٌ لِعَلَّاتٍ، أُمَّهَاتُهُمْ شَتَّى وَدِينُهُمْ وَاحِدٌ.",
+        rawi: "أبو هريرة رضي الله عنه",
+        source: "صحيح البخاري (٣٤٤٣) ومسلم (٢٣٦٥)",
+        benefit: "بيان وحدة رسالة التوحيد بين جميع الأنبياء والمرسلين."
+      },
+      {
+        prophet: "سيدنا محمد ﷺ",
+        text: "إنَّ مَثَلِي ومَثَلَ الأنْبِياءِ مِن قَبْلِي، كَمَثَلِ رَجُلٍ بَنَى بُنْيانًا فأحْسَنَهُ وأَجْمَلَهُ، إلَّا مَوْضِعَ لَبِنَةٍ مِن زاوِيَةٍ... فأنا اللَّبِنَةُ وأنا خاتِمُ النبيِّينَ.",
+        rawi: "أبو هريرة وجابر رضي الله عنهما",
+        source: "صحيح البخاري (٣٥٣٥) ومسلم (٢٢٨٦)",
+        benefit: "اكتمال صرح النبوات بسيدنا محمد خاتم الأنبياء والمرسلين."
+      }
+    ];
+
+    // ----------------------------------------------------
+    // 3. DATA: Stories of the Prophets
+    // ----------------------------------------------------
+    const prophetStories = [
+      { name: "آدم عليه السلام", title: "أبو البشر وخليفة الله في الأرض", ayah: "وَإِذْ قَالَ رَبُّكَ لِلْمَلَائِكَةِ إِنِّي جَاعِلٌ فِي الْأَرْضِ خَلِيفَةً", desc: "خلقه الله من طين ونفخ فيه من روحه وعلمه الأسماء كلها، ثم أسكنه الجنة ومنها استخلف في الأرض لإعمارها." },
+      { name: "نوح عليه السلام", title: "شيخ المرسلين وأول أولي العزم", ayah: "وَلَقَدْ أَرْسَلْنَا نُوحًا إِلَىٰ قَوْمِهِ فَلَبِثَ فِيهِمْ أَلْفَ سَنَةٍ إِلَّا خَمْسِينَ عَامًا", desc: "دعا قومه ليلاً ونهاراً بالصبر الجميل، وأمره الله بصنع الفلك وحمل المؤمنين حتى نجاهم من الطوفان العظيم." },
+      { name: "إبراهيم عليه السلام", title: "خليل الرحمن وإمام الحنفاء", ayah: "وَإِذِ ابْتَلَىٰ إِبْرَاهِيمَ رَبُّهُ بِكَلِمَاتٍ فَأَتَمَّهُنَّ ۖ قَالَ إِنِّي جَاعِلُكَ لِلنَّاسِ إِمَامًا", desc: "حطم الأصنام بيده وأُلقي في النار فكانت برداً وسلاماً، وبنى مع ابنه إسماعيل البيت العتيق بمكة المكرمة." },
+      { name: "يوسف عليه السلام", title: "الصديق ذو الرؤيا والعفة", ayah: "نَحْنُ نَقُصُّ عَلَيْكَ أَحْسَنَ الْقَصَصِ بِمَا أَوْحَيْنَا إِلَيْكَ هَٰذَا الْقُرْآنَ", desc: "مر بمحنة الجب والغربة والافتراء والسجن، حتى مكن الله له في مصر وكان مثلاً أعلى في العفة والصبر والإحسان." },
+      { name: "موسى عليه السلام", title: "كليم الله وقاهر فرعون", ayah: "وَكَلَّمَ اللَّهُ مُوسَىٰ تَكْلِيمًا", desc: "أيده الله بالآيات التسع والعصا وفلق البحر، وقاد بني إسرائيل بصبر وجلد عظيم أمام طغيان فرعون." },
+      { name: "سليمان عليه السلام", title: "النبي الملك المسخر له الريح والجن", ayah: "وَوَرِثَ سُلَيْمَانُ دَاوُودَ ۖ وَقَالَ يَا أَيُّهَا النَّاسُ عُلِّمْنَا مَنطِقَ الطَّيْرِ", desc: "سخر الله له الريح والجن وفهم منطق الطير، وشكر نعمة ربه بقوله: {هَٰذَا مِن فَضْلِ رَبِّي لِيَبْلُوَنِي أَأَشْكُرُ أَمْ أَكْفُرُ}." }
+    ];
+
+    // ----------------------------------------------------
+    // 4. DATA: Nasheeds
+    // ----------------------------------------------------
+    const nasheeds = [
+      { title: "طلع البدر علينا", singer: "تراث نبوي خالد", url: "https://www.islamcan.com/audio/nasheed/tala-al-badru-alayna.mp3", desc: "النشيد الخالد في استقبال المصطفى ﷺ عند هجرته للمدينة المنورة." },
+      { title: "رمضان تجلى وابتسم", singer: "إنشاد رمضاني", url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3", desc: "أنشودة البهجة والروحانية لاستقبال شهر الخير والقرآن والبركات." },
+      { title: "يا طيبة يا دوحة الهادي", singer: "تراث إسلامي", url: "https://www.islamcan.com/audio/nasheed/ya-taybah.mp3", desc: "أنشودة الشوق العاطر إلى طيبة الطيبة ومدينة الحبيب محمد ﷺ." }
+    ];
+
+    // ----------------------------------------------------
+    // Render Functions
+    // ----------------------------------------------------
+    function renderQuran(items) {
+      const container = document.getElementById("quran-list");
+      container.innerHTML = items.map(s => `
+        <div class="item-card">
+          <div>
+            <div class="card-header">
+              <span class="badge-id">سورة #${s.id}</span>
+              <span class="badge-source">${s.type} • ${s.verses} آية</span>
+            </div>
+            <div class="card-title">سورة ${s.name} (${s.en})</div>
+            <div class="card-desc">تبدأ في صفحة المصحف: ${s.page} • قراءة ترتيل برواية حفص عن عاصم.</div>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">مشاري العفاسي</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-action btn-primary" onclick="playAudio('${s.audioUrl}', 'سورة ${s.name}', 'الشيخ مشاري راشد العفاسي')">▶ استماع</button>
+              <a class="btn-action" href="${s.audioUrl}" download="Surah_${s.id}_${s.name}.mp3">📥 تنزيل</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderHadiths(items) {
+      const container = document.getElementById("hadiths-list");
+      container.innerHTML = items.map(h => `
+        <div class="item-card">
+          <div>
+            <div class="card-header">
+              <span class="badge-id">${h.prophet}</span>
+              <span class="badge-source">${h.source}</span>
+            </div>
+            <div class="arabic-text">« ${h.text} »</div>
+            <div class="card-desc"><strong>💡 الفائدة والشرح:</strong> ${h.benefit}</div>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">رواه: ${h.rawi}</span>
+            <button class="btn-action" onclick="copyText('${h.prophet}: «${h.text}» [${h.source}]')">📋 نسخ الحديث</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderProphets(items) {
+      const container = document.getElementById("prophets-list");
+      container.innerHTML = items.map(p => `
+        <div class="item-card">
+          <div>
+            <div class="card-header">
+              <span class="badge-id">نبي من أولي العزم</span>
+              <span class="badge-source">القرآن الكريم</span>
+            </div>
+            <div class="card-title">${p.name}</div>
+            <div class="card-desc" style="color:#fbbf24; font-weight:600;">${p.title}</div>
+            <div class="arabic-text">« ${p.ayah} »</div>
+            <div class="card-desc">${p.desc}</div>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">عبرة وآيات</span>
+            <button class="btn-action" onclick="copyText('سيرة ${p.name}: ${p.desc}')">📋 نسخ القصة</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderNasheeds(items) {
+      const container = document.getElementById("nasheeds-list");
+      container.innerHTML = items.map(n => `
+        <div class="item-card">
+          <div>
+            <div class="card-header">
+              <span class="badge-id">🎵 أنشودة</span>
+              <span class="badge-source">${n.singer}</span>
+            </div>
+            <div class="card-title">${n.title}</div>
+            <div class="card-desc">${n.desc}</div>
+          </div>
+          <div class="card-footer">
+            <span class="card-meta">صوتيات بدون إيقاع</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-action btn-primary" onclick="playAudio('${n.url}', '${n.title}', '${n.singer}')">▶ استماع</button>
+              <a class="btn-action" href="${n.url}" download="${n.title}.mp3">📥 تنزيل</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ----------------------------------------------------
+    // Audio Player & Controls
+    // ----------------------------------------------------
+    function playAudio(url, title, sub) {
+      const bar = document.getElementById("audio-bar");
+      const player = document.getElementById("global-player");
+      document.getElementById("audio-title").innerText = title;
+      document.getElementById("audio-sub").innerText = sub;
+      bar.style.display = "flex";
+      player.src = url;
+      player.play();
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById("toast");
+        toast.style.display = "block";
+        setTimeout(() => { toast.style.display = "none"; }, 2000);
+      });
+    }
+
+    // ----------------------------------------------------
+    // Search Filters
+    // ----------------------------------------------------
+    function filterQuran() {
+      const q = document.getElementById("quran-search").value.trim().toLowerCase();
+      const filtered = surahs.filter(s => s.name.includes(q) || s.en.toLowerCase().includes(q) || s.id.toString() === q);
+      renderQuran(filtered);
+    }
+
+    function filterHadiths() {
+      const q = document.getElementById("hadiths-search").value.trim().toLowerCase();
+      const filtered = hadiths.filter(h => h.prophet.includes(q) || h.text.includes(q) || h.source.includes(q) || h.benefit.includes(q));
+      renderHadiths(filtered);
+    }
+
+    function filterProphets() {
+      const q = document.getElementById("prophets-search").value.trim().toLowerCase();
+      const filtered = prophetStories.filter(p => p.name.includes(q) || p.desc.includes(q) || p.ayah.includes(q));
+      renderProphets(filtered);
+    }
+
+    // ----------------------------------------------------
+    // Tab Switching
+    // ----------------------------------------------------
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+
+      event.target.classList.add("active");
+      document.getElementById("tab-" + tabId).classList.add("active");
+    }
+
+    // Initial Load
+    renderQuran(surahs);
+    renderHadiths(hadiths);
+    renderProphets(prophetStories);
+    renderNasheeds(nasheeds);
+  </script>
+</body>
+</html>

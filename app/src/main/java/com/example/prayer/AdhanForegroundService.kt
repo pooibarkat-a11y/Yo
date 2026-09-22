@@ -295,7 +295,7 @@ class AdhanForegroundService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("🕌 حان الآن موعد أذان $prayerName")
+            .setContentTitle("🕌 حان وقت الصلاة • أذان $prayerName")
             .setContentText("حيّ على الصلاة، حيّ على الفلاح • $muezzinName")
             .setStyle(
                 NotificationCompat.BigTextStyle()

@@ -702,6 +702,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     // Row 1: قصص الأنبياء & السيرة النبوية
+                    // Row 1: قصص الأنبياء & أحاديث الأنبياء
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -740,23 +741,23 @@ fun HomeScreen(
                             color = MaterialTheme.colorScheme.surface,
                             modifier = Modifier
                                 .weight(1f)
-                                .clickable { viewModel.navigateToAcademy(AcademyTab.SEERAH) }
-                                .testTag("shortcut_seerah")
+                                .clickable { viewModel.navigateToAcademy(AcademyTab.HADITHS) }
+                                .testTag("shortcut_prophet_hadiths")
                         ) {
                             Row(
                                 modifier = Modifier.padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text = "🕌", fontSize = 22.sp)
+                                Text(text = "💎", fontSize = 22.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Column {
                                     Text(
-                                        text = "السيرة النبوية",
+                                        text = "أحاديث الأنبياء",
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = "من المولد حتى الوفاة",
+                                        text = "من المصادر الموثوقة",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )

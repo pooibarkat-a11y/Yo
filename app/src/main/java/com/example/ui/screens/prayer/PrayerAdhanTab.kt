@@ -559,7 +559,7 @@ fun PrayerAdhanTab(
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "«اقترب موعد صلاة.. استعد للوقوف بين يدي الله وتوضأ»",
+                                        text = "«اقتربت موعد وقت الصلاة.. استعد وتوضأ» و «حان وقت الصلاة.. حيّ على الصلاة»",
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )

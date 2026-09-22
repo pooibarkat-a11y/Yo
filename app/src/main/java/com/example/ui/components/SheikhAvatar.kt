@@ -37,8 +37,10 @@ fun getSheikhDrawableResource(nameArabic: String, sheikhId: String? = null): Int
         // الشيخ عبد الباسط عبد الصمد
         name.contains("عبد الباسط") || name.contains("عبدالباسط") || id.contains("abdulbasit") -> R.drawable.img_sheikh_abdulbasit
 
-        // الشيخ محمد صديق المنشاوي والشيخ محمود خليل الحصري
-        name.contains("المنشاوي") || name.contains("منشاوي") || id.contains("minshawi") || id.contains("minshawy") ||
+        // الشيخ محمد صديق المنشاوي
+        name.contains("المنشاوي") || name.contains("منشاوي") || id.contains("minshawi") || id.contains("minshawy") -> R.drawable.img_sheikh_husary_minshawi
+
+        // الشيخ محمود خليل الحصري
         name.contains("الحصري") || name.contains("حصري") || id.contains("husary") || id.contains("husr") -> R.drawable.img_sheikh_husary_minshawi
 
         // الشيخ عبد الرحمن السديس
@@ -50,15 +52,20 @@ fun getSheikhDrawableResource(nameArabic: String, sheikhId: String? = null): Int
         // شيخ المؤذنين علي أحمد ملا
         name.contains("ملا") || id.contains("ali_mulla") -> R.drawable.img_sheikh_ali_mulla
 
-        // بقية عمالقة التلاوة بالأزهر ومصر (مصطفى إسماعيل، الطبلاوي، البنا، رفعت، نعينع، حجاج السويسي)
+        // المصاحف المعلمة ودكاترة التجويد (أيمن سويد، الحصري معلم، المنشاوي معلم، بصفر)
+        name.contains("معلم") || name.contains("المعلم") || name.contains("سويد") || id.contains("sowaid") || id.contains("teacher") || id.contains("muallim") -> R.drawable.img_sheikh_muallim_teacher_1790102488253
+
+        // عمالقة التلاوة المصرية والأزهر الشريف (مصطفى إسماعيل، الطبلاوي، البنا، رفعت، نعينع، حجاج السويسي، عبد الباسط، المنشاوي)
         name.contains("مصطفى إسماعيل") || name.contains("إسماعيل") || id.contains("mustafa") ||
         name.contains("الطبلاوي") || id.contains("tablaway") || id.contains("tblawi") ||
         name.contains("البنا") || id.contains("banna") ||
         name.contains("رفعت") || id.contains("rifat") ||
         name.contains("نعينع") || id.contains("neana") ||
-        name.contains("حجاج") || name.contains("السويسي") -> R.drawable.img_sheikh_azhari
+        name.contains("سلامة") || id.contains("salamah") ||
+        name.contains("العلقمي") || id.contains("alaqimy") ||
+        name.contains("حجاج") || name.contains("السويسي") -> R.drawable.img_sheikh_classic_azhari_1790102464015
 
-        // بقية أئمة الحرمين الشريفين وقراء المملكة (الشريم، الدوسري، الغامدي، العجمي، القطامي، الحذيفي، الشاطري، الجهني، البدير، أيوب، علي جابر، إدريس أبكر، نورين)
+        // أئمة الحرمين الشريفين وقراء المملكة (الشريم، الدوسري، الغامدي، العجمي، القطامي، الحذيفي، الشاطري، الجهني، البدير، أيوب، علي جابر، إدريس أبكر، بوخاطر)
         name.contains("الشريم") || name.contains("شريم") || id.contains("shuraim") ||
         name.contains("الدوسري") || name.contains("دوسري") || id.contains("dosari") ||
         name.contains("الغامدي") || name.contains("غامدي") || id.contains("ghamdi") ||
@@ -72,14 +79,20 @@ fun getSheikhDrawableResource(nameArabic: String, sheikhId: String? = null): Int
         name.contains("علي جابر") || id.contains("ali_jaber") ||
         name.contains("القاسم") || name.contains("اللحيدان") || name.contains("المحيسني") ||
         name.contains("إدريس أبكر") || id.contains("abkr") ||
-        name.contains("نورين") || id.contains("nourin") -> R.drawable.img_sheikh_haram
+        name.contains("القحطاني") || id.contains("qahtani") ||
+        name.contains("مطرود") || id.contains("matroud") ||
+        name.contains("الأخضر") || id.contains("akhdar") ||
+        name.contains("عباد") || id.contains("abbad") ||
+        name.contains("الرفاعي") || id.contains("rifai") ||
+        name.contains("بو خاطر") || id.contains("bukhatir") ||
+        name.contains("نورين") || id.contains("nourin") -> R.drawable.img_sheikh_haram_sheikhs_1790102475906
 
         // كبار المؤذنين في العالم الإسلامي والأذان
         name.contains("مؤذن") || name.contains("أذان") || name.contains("الأذان") ||
         name.contains("الحرم المكي") || name.contains("المسجد الأقصى") || name.contains("النبوي") -> R.drawable.img_muezzin_adhan
 
-        // الصورة الفوتوغرافية المعتمدة لبقية الشيوخ والقراء
-        else -> R.drawable.img_sheikh_reciter
+        // الصورة الفوتوغرافية الأصلية لكافة مشايخ وقراء كتاب الله
+        else -> R.drawable.img_sheikh_reciters_authentic_1790102449181
     }
 }
 

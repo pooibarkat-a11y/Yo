@@ -2,184 +2,889 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ترتيل - تطبيق القرآن الكريم الذكي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ترتيل - تطبيق القرآن الكريم والأكاديمية الإسلامية</title>
+  <!-- Google Fonts: Cairo & Amiri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #059669;
       --primary-dark: #064e3b;
+      --primary-light: #10b981;
       --accent-gold: #d97706;
-      --bg-dark: #0f172a;
-      --card-bg: #1e293b;
+      --accent-gold-light: #fbbf24;
+      --bg-dark: #0b1523;
+      --surface-dark: #122135;
+      --surface-variant: #182c44;
+      --card-border: rgba(255, 255, 255, 0.08);
       --text-white: #f8fafc;
       --text-muted: #94a3b8;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
+
     body {
-      background: linear-gradient(135deg, #064e3b 0%, #0f172a 50%, #022c22 100%);
+      background: #08111b;
       color: var(--text-white);
-      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Mobile Frame Mockup */
+    .mobile-wrapper {
+      width: 100%;
+      max-width: 480px;
+      height: 100vh;
+      background: linear-gradient(165deg, #062821 0%, #0b1726 40%, #061921 100%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0,0,0,0.8);
+      border-left: 1px solid rgba(255,255,255,0.06);
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @media (min-width: 500px) {
+      .mobile-wrapper {
+        height: 94vh;
+        border-radius: 36px;
+        border: 4px solid #1e293b;
+      }
+    }
+
+    /* Top App Bar */
+    .top-app-bar {
+      height: 64px;
+      background: rgba(18, 33, 53, 0.85);
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(217, 119, 6, 0.2);
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary) 0%, #047857 100%);
+      border: 1.5px solid var(--accent-gold);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .brand-text h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .brand-text p {
+      font-size: 0.68rem;
+      color: #34d399;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-badge-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent-gold-light);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Screen Views Container */
+    .screen-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 14px 120px;
+      position: relative;
+    }
+
+    .screen-container::-webkit-scrollbar {
+      width: 4px;
+    }
+    .screen-container::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+    }
+
+    .view-screen {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .view-screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sub-tabs inside Academy & Quran */
+    .subtabs-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .subtabs-scroll::-webkit-scrollbar { display: none; }
+
+    .subtab-pill {
+      background: rgba(18, 33, 53, 0.85);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .subtab-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Cards & Components matching Android */
+    .hero-khatmah-card {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.7) 0%, rgba(18, 33, 53, 0.95) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .card-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar-wrap {
+      background: rgba(0,0,0,0.3);
+      height: 8px;
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+      border-radius: 99px;
+    }
+
+    /* Quick Action Grid (Android Home Icons) */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .quick-btn {
+      background: var(--surface-dark);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px;
-      text-align: center;
-    }
-    .container {
-      max-width: 680px;
-      width: 100%;
-      background: rgba(30, 41, 59, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(217, 119, 6, 0.35);
-      border-radius: 28px;
-      padding: 40px 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
       gap: 6px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(217, 119, 6, 0.15);
-      border: 1px solid var(--accent-gold);
-      color: #fbbf24;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.15s;
     }
-    .app-icon {
-      width: 96px;
-      height: 96px;
-      margin: 0 auto 20px;
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      border: 2px solid var(--accent-gold);
-      border-radius: 24px;
+
+    .quick-btn:hover {
+      background: var(--surface-variant);
+      transform: translateY(-2px);
+    }
+
+    .quick-btn-icon {
+      font-size: 22px;
+    }
+
+    .quick-btn-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* List Item Cards (Surahs / Hadiths / Stories) */
+    .item-box {
+      background: var(--surface-dark);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+
+    .item-box:hover {
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .ayah-text {
+      font-family: 'Amiri', serif;
+      font-size: 1.25rem;
+      line-height: 2.1;
+      color: #f8fafc;
+      background: rgba(8, 17, 27, 0.45);
+      border-right: 3px solid var(--accent-gold);
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin: 10px 0;
+    }
+
+    .badge-tag {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .badge-tag.green { background: rgba(5, 150, 105, 0.15); color: #34d399; }
+    .badge-tag.gold { background: rgba(217, 119, 6, 0.15); color: #fbbf24; }
+
+    /* Sticky Bottom Player (Android Mini Player) */
+    .mini-player-bar {
+      position: absolute;
+      bottom: 64px;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: rgba(18, 33, 53, 0.95);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(16, 185, 129, 0.3);
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+      justify-content: space-between;
+      padding: 0 14px;
+      z-index: 45;
     }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: #f8fafc;
-      margin-bottom: 12px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+
+    .mini-player-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
     }
-    p.subtitle {
-      font-size: 1.1rem;
+
+    .mini-player-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .mini-player-sub {
+      font-size: 0.68rem;
       color: var(--text-muted);
-      margin-bottom: 28px;
-      line-height: 1.7;
     }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 32px;
-      text-align: right;
+
+    /* Android Bottom Navigation Bar */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #0f1c2d;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 50;
+      padding-bottom: env(safe-area-inset-bottom, 0);
     }
-    .feature-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 14px;
-      font-size: 0.9rem;
-    }
-    .feature-card strong {
-      display: block;
-      color: #34d399;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
-    .cta-btn {
-      display: inline-flex;
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 100%;
-      max-width: 360px;
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      color: white;
-      text-decoration: none;
-      font-size: 1.15rem;
-      font-weight: 800;
-      padding: 16px 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.45);
-    }
-    .info-box {
-      margin-top: 28px;
-      padding: 14px;
-      background: rgba(217, 119, 6, 0.1);
-      border: 1px dashed rgba(217, 119, 6, 0.4);
-      border-radius: 14px;
-      font-size: 0.88rem;
-      color: #fde68a;
-      line-height: 1.6;
-    }
-    footer {
-      margin-top: 24px;
-      font-size: 0.85rem;
+      gap: 3px;
       color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.15s;
+      flex: 1;
+      height: 100%;
+    }
+
+    .nav-item.active {
+      color: #34d399;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+    }
+
+    .nav-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    /* Search Input */
+    .search-input {
+      width: 100%;
+      background: var(--surface-dark);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--primary-light);
+    }
+
+    /* Toast */
+    .toast-popup {
+      position: absolute;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-dark);
+      border: 1px solid var(--accent-gold);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 99px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge">✨ تطبيق أندرويد متكامل</div>
-    <div class="app-icon">📖</div>
-    <h1>تطبيق ترتيل للقرآن الكريم</h1>
-    <p class="subtitle">تطبيق القرآن الكريم الذكي الشامل — تلاوة بالرسم العثماني، استماع لكبار القراء بدون إنترنت، اختبار الحفظ بالذكاء الاصطناعي، ومساعد قرآني ذكي.</p>
 
-    <div class="features-grid">
-      <div class="feature-card">
-        <strong>📖 المصحف الشريف</strong>
-        صفحات مصحف المدينة بالرسم العثماني
+  <div class="mobile-wrapper">
+
+    <!-- Top App Bar -->
+    <header class="top-app-bar">
+      <div class="app-brand">
+        <div class="brand-icon">📖</div>
+        <div class="brand-text">
+          <h1 id="screen-header-title">ترتيل</h1>
+          <p id="screen-header-sub">القرآن الكريم والأكاديمية</p>
+        </div>
       </div>
-      <div class="feature-card">
-        <strong>🎧 استماع وتنزيل</strong>
-        تنزيل سور وأناشيد للهاتف بدون نت
+      <div class="top-actions">
+        <div class="icon-badge-btn" onclick="showToast('مستواك: 120 XP • مثابر')">🏆 120 XP</div>
+        <div class="icon-badge-btn" onclick="navigateTo('smart-notifications')">🔔</div>
       </div>
-      <div class="feature-card">
-        <strong>🎙️ اختبار الحفظ</strong>
-        تسميع وتصحيح ذكي عبر الذكاء الاصطناعي
+    </header>
+
+    <!-- Toast Notification -->
+    <div id="toast-msg" class="toast-popup">تم النسخ بنجاح!</div>
+
+    <!-- Main Screens Container -->
+    <div class="screen-container">
+
+      <!-- ================= 1. HOME SCREEN ================= -->
+      <div id="screen-home" class="view-screen active">
+
+        <!-- Khatmah Hero Card -->
+        <div class="hero-khatmah-card">
+          <div class="card-row-between">
+            <span style="font-size: 0.85rem; font-weight: 800; color: #34d399;">📖 ورد اليوم القرآني</span>
+            <span class="badge-tag gold">الجزء ١ • الحزب ١</span>
+          </div>
+          <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 6px;">خطة ختم القرآن (٣٠ يوماً) - ٤٨ صفحة مقروءة</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-fill" style="width: 14%;"></div>
+          </div>
+          <div class="card-row-between" style="margin-top: 6px; font-size: 0.72rem; color: #94a3b8;">
+            <span>تم إنجاز ١٤% من الختمة</span>
+            <span style="color: #fbbf24; cursor: pointer;" onclick="navigateTo('quran')">متابعة التلاوة ◀</span>
+          </div>
+        </div>
+
+        <!-- Quick Access 4x3 Grid (Matching Android Exact Shortcuts) -->
+        <div class="quick-grid">
+          <div class="quick-btn" onclick="navigateTo('quran')">
+            <span class="quick-btn-icon">📖</span>
+            <span class="quick-btn-label">المصحف</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('hifz')">
+            <span class="quick-btn-icon">🎙️</span>
+            <span class="quick-btn-label">اختبر حفظي</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('academy')">
+            <span class="quick-btn-icon">🏛️</span>
+            <span class="quick-btn-label">الأكاديمية</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('academy', 'hadiths')">
+            <span class="quick-btn-icon">💎</span>
+            <span class="quick-btn-label">أحاديث الأنبياء</span>
+          </div>
+
+          <div class="quick-btn" onclick="navigateTo('azkar')">
+            <span class="quick-btn-icon">☀️</span>
+            <span class="quick-btn-label">الأذكار</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('prayer')">
+            <span class="quick-btn-icon">🕌</span>
+            <span class="quick-btn-label">الصلاة والقبلة</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('audio')">
+            <span class="quick-btn-icon">🎧</span>
+            <span class="quick-btn-label">الاستماع</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('ai')">
+            <span class="quick-btn-icon">✨</span>
+            <span class="quick-btn-label">المساعد الذكي</span>
+          </div>
+
+          <div class="quick-btn" onclick="navigateTo('tasks')">
+            <span class="quick-btn-icon">✅</span>
+            <span class="quick-btn-label">مهمات اليوم</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('ramadan')">
+            <span class="quick-btn-icon">🌙</span>
+            <span class="quick-btn-label">رمضان كريم</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('allah-names')">
+            <span class="quick-btn-icon">💚</span>
+            <span class="quick-btn-label">أسماء الله</span>
+          </div>
+          <div class="quick-btn" onclick="navigateTo('gallery')">
+            <span class="quick-btn-icon">🖼️</span>
+            <span class="quick-btn-label">المعرض</span>
+          </div>
+        </div>
+
+        <!-- Daily Verse of the Day -->
+        <div class="item-box">
+          <div class="card-row-between">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #34d399;">🌟 آية اليوم وتفسيرها</span>
+            <span class="badge-tag green">سورة البقرة: ٢٥٥</span>
+          </div>
+          <div class="ayah-text">« اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ »</div>
+          <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.6;">آية الكرسي: أعظم آية في كتاب الله تعالى، تشتمل على أصول التوحيد وبيان عظمة الخالق جل وعلا.</p>
+        </div>
+
       </div>
-      <div class="feature-card">
-        <strong>🕌 أوقات الصلاة</strong>
-        مواقيت دقيقة وقبلة وأذكار يومية
+
+      <!-- ================= 2. QURAN SCREEN ================= -->
+      <div id="screen-quran" class="view-screen">
+        <input type="text" id="quran-search-input" class="search-input" placeholder="🔍 ابحث عن سورة بالاسم أو بالرقم..." onkeyup="filterSurahs()">
+        <div id="surahs-list-container"></div>
+      </div>
+
+      <!-- ================= 3. ISLAMIC ACADEMY ================= -->
+      <div id="screen-academy" class="view-screen">
+        <!-- Academy Subtabs (Prophets, Hadiths, Seerah, Pillars) -->
+        <div class="subtabs-scroll">
+          <button class="subtab-pill active" onclick="switchAcademyTab('prophets')">📜 قصص الأنبياء</button>
+          <button class="subtab-pill" onclick="switchAcademyTab('hadiths')">💎 أحاديث الأنبياء</button>
+          <button class="subtab-pill" onclick="switchAcademyTab('seerah')">🕌 السيرة النبوية</button>
+          <button class="subtab-pill" onclick="switchAcademyTab('islam')">🕋 أركان الإسلام</button>
+          <button class="subtab-pill" onclick="switchAcademyTab('iman')">✨ أركان الإيمان</button>
+        </div>
+        <div id="academy-content-container"></div>
+      </div>
+
+      <!-- ================= 4. HIFZ (TEST) SCREEN ================= -->
+      <div id="screen-hifz" class="view-screen">
+        <div class="item-box" style="text-align: center; padding: 24px 16px;">
+          <div style="font-size: 40px; margin-bottom: 8px;">🎙️</div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 6px;">اختبار وتسميع القرآن بالذكاء الاصطناعي</h3>
+          <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+            اضغط على الميكروفون وابدأ في تلاوة الآيات الكريمة، وسيقوم النظام بتصحيح التلاوة وكشف الأخطاء تلقائياً.
+          </p>
+          <button style="background: linear-gradient(135deg, var(--primary) 0%, #10b981 100%); color: #fff; border: none; padding: 12px 28px; border-radius: 99px; font-weight: 800; font-size: 0.9rem; cursor: pointer;" onclick="showToast('جاهز للاستماع لتلاوتك...')">
+            🎤 ابدأ التسميع الآن
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= 5. AZKAR SCREEN ================= -->
+      <div id="screen-azkar" class="view-screen">
+        <div class="subtabs-scroll">
+          <button class="subtab-pill active" onclick="filterAzkarCategory('morning')">أذكار الصباح</button>
+          <button class="subtab-pill" onclick="filterAzkarCategory('evening')">أذكار المساء</button>
+          <button class="subtab-pill" onclick="filterAzkarCategory('sleep')">أذكار النوم</button>
+          <button class="subtab-pill" onclick="filterAzkarCategory('prayer')">أذكار بعد الصلاة</button>
+        </div>
+        <div id="azkar-list-container"></div>
+      </div>
+
+      <!-- ================= 6. PRAYER & QIBLA ================= -->
+      <div id="screen-prayer" class="view-screen">
+        <div class="item-box" style="background: linear-gradient(135deg, #064e3b 0%, #11263c 100%);">
+          <div class="card-row-between">
+            <div>
+              <div style="font-size: 0.8rem; color: #6ee7b7;">الصلاة القادمة:</div>
+              <div style="font-size: 1.4rem; font-weight: 900; color: #fff;">صلاة العصر (03:30 م)</div>
+            </div>
+            <div style="font-size: 36px;">🕌</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #fbbf24; margin-top: 6px;">متبقي: ٤٥ دقيقة على الأذان</div>
+        </div>
+
+        <div class="item-box">
+          <div style="font-weight: 800; margin-bottom: 12px; color: #34d399;">مواقيت الصلاة اليوم:</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="card-row-between" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+              <span>الفجر</span><span style="font-weight: bold; color: #fff;">04:42 ص</span>
+            </div>
+            <div class="card-row-between" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+              <span>الشروق</span><span style="font-weight: bold; color: #fff;">06:05 ص</span>
+            </div>
+            <div class="card-row-between" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+              <span>الظهر</span><span style="font-weight: bold; color: #fff;">12:15 م</span>
+            </div>
+            <div class="card-row-between" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+              <span>العصر</span><span style="font-weight: bold; color: #34d399;">03:30 م</span>
+            </div>
+            <div class="card-row-between" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+              <span>المغرب</span><span style="font-weight: bold; color: #fff;">06:25 م</span>
+            </div>
+            <div class="card-row-between">
+              <span>العشاء</span><span style="font-weight: bold; color: #fff;">07:45 م</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sticky Mini Audio Player Bar (Matching Android MiniAudioPlayer) -->
+    <div id="mini-audio-bar" class="mini-player-bar" style="display: none;">
+      <div class="mini-player-info">
+        <span style="font-size: 20px;">🎧</span>
+        <div style="overflow: hidden;">
+          <div class="mini-player-title" id="player-title">سورة الفاتحة</div>
+          <div class="mini-player-sub" id="player-sheikh">الشيخ مشاري راشد العفاسي</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <audio id="audio-engine" controls style="height: 32px; max-width: 140px;"></audio>
+        <button style="background: none; border: none; color: #94a3b8; font-size: 16px; cursor: pointer;" onclick="closeAudio()">✕</button>
       </div>
     </div>
 
-    <a id="download-btn" href="./app-debug.apk" class="cta-btn" download="Tarteel-Quran-App.apk">
-      <span>📥 تنزيل تطبيق أندرويد (APK)</span>
-    </a>
+    <!-- Bottom Navigation Bar (5 Primary Android Destinations) -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" id="nav-home" onclick="navigateTo('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">الرئيسية</span>
+      </div>
+      <div class="nav-item" id="nav-quran" onclick="navigateTo('quran')">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">المصحف</span>
+      </div>
+      <div class="nav-item" id="nav-hifz" onclick="navigateTo('hifz')">
+        <span class="nav-icon">🎙️</span>
+        <span class="nav-label">اختبر حفظي</span>
+      </div>
+      <div class="nav-item" id="nav-academy" onclick="navigateTo('academy')">
+        <span class="nav-icon">🏛️</span>
+        <span class="nav-label">الأكاديمية</span>
+      </div>
+      <div class="nav-item" id="nav-azkar" onclick="navigateTo('azkar')">
+        <span class="nav-icon">🕌</span>
+        <span class="nav-label">الأذكار</span>
+      </div>
+    </nav>
 
-    <div class="info-box">
-      ⚡ <strong>تنبيه:</strong> يتم بناء ملف الـ APK تلقائياً عبر GitHub Actions عند كل تحديث في المستودع. تعمل هذه الصفحة عبر GitHub Pages مباشرة.
-    </div>
   </div>
 
-  <footer>
-    تطبيق ترتيل © 2026 — مصمم بأعلى معايير الجودة والتصميم
-  </footer>
+  <script>
+    // ----------------------------------------------------
+    // 1. DATA: Surahs List
+    // ----------------------------------------------------
+    const allSurahs = [
+      { id: 1, name: "الفاتحة", en: "Al-Fatihah", verses: 7, type: "مكية", page: 1, audio: "https://server8.mp3quran.net/afs/001.mp3" },
+      { id: 2, name: "البقرة", en: "Al-Baqarah", verses: 286, type: "مدنية", page: 2, audio: "https://server8.mp3quran.net/afs/002.mp3" },
+      { id: 3, name: "آل عمران", en: "Aal-Imran", verses: 200, type: "مدنية", page: 50, audio: "https://server8.mp3quran.net/afs/003.mp3" },
+      { id: 4, name: "النساء", en: "An-Nisa", verses: 176, type: "مدنية", page: 77, audio: "https://server8.mp3quran.net/afs/004.mp3" },
+      { id: 18, name: "الكهف", en: "Al-Kahf", verses: 110, type: "مكية", page: 293, audio: "https://server8.mp3quran.net/afs/018.mp3" },
+      { id: 19, name: "مريم", en: "Maryam", verses: 98, type: "مكية", page: 305, audio: "https://server8.mp3quran.net/afs/019.mp3" },
+      { id: 36, name: "يس", en: "Ya-Sin", verses: 83, type: "مكية", page: 440, audio: "https://server8.mp3quran.net/afs/036.mp3" },
+      { id: 55, name: "الرحمن", en: "Ar-Rahman", verses: 78, type: "مدنية", page: 531, audio: "https://server8.mp3quran.net/afs/055.mp3" },
+      { id: 56, name: "الواقعة", en: "Al-Waqi'ah", verses: 96, type: "مكية", page: 534, audio: "https://server8.mp3quran.net/afs/056.mp3" },
+      { id: 67, name: "الملك", en: "Al-Mulk", verses: 30, type: "مكية", page: 562, audio: "https://server8.mp3quran.net/afs/067.mp3" },
+      { id: 112, name: "الإخلاص", en: "Al-Ikhlas", verses: 4, type: "مكية", page: 604, audio: "https://server8.mp3quran.net/afs/112.mp3" },
+      { id: 113, name: "الفلق", en: "Al-Falaq", verses: 5, type: "مكية", page: 604, audio: "https://server8.mp3quran.net/afs/113.mp3" },
+      { id: 114, name: "الناس", en: "An-Nas", verses: 6, type: "مكية", page: 604, audio: "https://server8.mp3quran.net/afs/114.mp3" }
+    ];
+
+    // ----------------------------------------------------
+    // 2. DATA: Authentic Prophet Hadiths
+    // ----------------------------------------------------
+    const prophetHadiths = [
+      {
+        prophet: "سيدنا آدم عليه السلام",
+        text: "خَلَقَ اللَّهُ آدَمَ علَى صُورَتِهِ، طُولُهُ سِتُّونَ ذِرَاعًا، فَلَمَّا خَلَقَهُ قالَ: اذْهَبْ فَسَلِّمْ علَى أُولَئِكَ... فَقالوا: السَّلامُ عَلَيْكَ ورَحْمَةُ اللَّهِ.",
+        rawi: "أبو هريرة رضي الله عنه",
+        source: "صحيح البخاري (٦٢٢٧)",
+        benefit: "بيان بدء خلق الإنسان وسنة السلام المباركة."
+      },
+      {
+        prophet: "سيدنا نوح عليه السلام",
+        text: "يُدْعَى نُوحٌ يَومَ القِيَامَةِ فيَقولُ: هَلْ بَلَّغْتَ؟ فيَقولُ: نَعَمْ... فيَقولُ: مَن يَشْهَدُ لَكَ؟ فيَقولُ: مُحَمَّدٌ وأُمَّتُهُ.",
+        rawi: "أبو سعيد الخدري رضي الله عنه",
+        source: "صحيح البخاري (٤٤٨٧)",
+        benefit: "شهادة أمة محمد لنوح عليه السلام يوم القيامة بالبلاغ."
+      },
+      {
+        prophet: "سيدنا إبراهيم عليه السلام",
+        text: "إنَّ أوَّلَ النَّاسِ يُكْسَى يَومَ القِيَامَةِ إبْرَاهِيمُ صَلَّى اللَّهُ عليه وسلَّمَ.",
+        rawi: "ابن عباس رضي الله عنهما",
+        source: "صحيح البخاري (٣٣٤٩)",
+        benefit: "رفعة مقام خليل الرحمن وجزاء ثباته في سبيل التوحيد."
+      },
+      {
+        prophet: "سيدنا موسى عليه السلام",
+        text: "لا تُخَيِّرُوني علَى مُوسَى؛ فإنَّ النَّاسَ يَصْعَقُونَ يَومَ القِيَامَةِ، فأَصْعَقُ معهُمْ، فأكُونُ أوَّلَ مَن يُفِيقُ، فإذا مُوسَى بَاطِشٌ بجَانِبِ العَرْشِ.",
+        rawi: "أبو هريرة رضي الله عنه",
+        source: "صحيح البخاري (٢٤١١)",
+        benefit: "عظمة قدر كليم الله موسى وتواضع النبي محمد معه."
+      },
+      {
+        prophet: "سيدنا يونس عليه السلام",
+        text: "دَعْوَةُ ذِي النُّونِ إذْ دَعا وهو في بَطْنِ الحُوتِ: {لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ}؛ لم يَدْعُ بها رجُلٌ مُسْلِمٌ في شَيءٍ إلَّا اسْتَجابَ اللهُ له.",
+        rawi: "سعد بن أبي وقاص رضي الله عنه",
+        source: "جامع الترمذي (٣٥٠٥)",
+        benefit: "دعاء كشف الهموم والكروب المستجاب."
+      },
+      {
+        prophet: "سيدنا محمد ﷺ",
+        text: "إنَّ مَثَلِي ومَثَلَ الأنْبِياءِ مِن قَبْلِي كَمَثَلِ رَجُلٍ بَنَى بُنْيانًا فأحْسَنَهُ... فأنا اللَّبِنَةُ وأنا خاتِمُ النبيِّينَ.",
+        rawi: "أبو هريرة رضي الله عنه",
+        source: "صحيح البخاري (٣٥٣٥)",
+        benefit: "تمام الرسالات والنبوة بسيدنا محمد خاتم المرسلين."
+      }
+    ];
+
+    // ----------------------------------------------------
+    // 3. DATA: Stories of the Prophets
+    // ----------------------------------------------------
+    const prophetStories = [
+      { name: "آدم عليه السلام", title: "أبو البشر وخليفة الله في الأرض", ayah: "وَإِذْ قَالَ رَبُّكَ لِلْمَلَائِكَةِ إِنِّي جَاعِلٌ فِي الْأَرْضِ خَلِيفَةً", desc: "خلقه الله تعالى من طين ونفخ فيه من روحه وعلمه الأسماء كلها، وأسكنه الجنة ثم استخلفه في الأرض لعمارتها وعبادة الله وحده." },
+      { name: "نوح عليه السلام", title: "شيخ المرسلين وأول أولي العزم", ayah: "وَلَقَدْ أَرْسَلْنَا نُوحًا إِلَىٰ قَوْمِهِ فَلَبِثَ فِيهِمْ أَلْفَ سَنَةٍ إِلَّا خَمْسِينَ عَامًا", desc: "صبر على دعوة قومه قروناً متتابعة ليلاً ونهاراً، وبنى الفلك بأمر الله ونجّى الله به المؤمنين من الطوفان العظيم." },
+      { name: "إبراهيم عليه السلام", title: "خليل الرحمن وإمام الحنفاء", ayah: "وَإِذِ ابْتَلَىٰ إِبْرَاهِيمَ رَبُّهُ بِكَلِمَاتٍ فَأَتَمَّهُنَّ", desc: "حطم الأصنام وجعلها جذاذاً، وحماه الله من نار النمرود، وبنى البيت الحرام مع ابنه إسماعيل ليكون قبلة للمسلمين." },
+      { name: "يوسف عليه السلام", title: "الصديق ذو الرؤيا والجمال والعفة", ayah: "نَحْنُ نَقُصُّ عَلَيْكَ أَحْسَنَ الْقَصَصِ", desc: "تجاوز محنة إخوته وغربة الجب والفتنة في قصر العزيز والسجن، حتى رفعه الله وجعله على خزائن مصر ومضرب المثل في العفة والإحسان." }
+    ];
+
+    // ----------------------------------------------------
+    // 4. DATA: Azkar
+    // ----------------------------------------------------
+    const azkarData = [
+      { cat: "morning", text: "أَصْبَحْنَا وَأَصْبَحَ المُلْكُ لِلَّهِ، وَالحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.", count: 1, benefit: "الاعتراف بملك الله وحمده في الصباح." },
+      { cat: "morning", text: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ.", count: 1, benefit: "سيد الاستغفار: من قاله موقناً ومات دخل الجنة." },
+      { cat: "evening", text: "أَمْسَيْنَا وَأَمْسَى المُلْكُ لِلَّهِ، وَالحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.", count: 1, benefit: "شكر وحمد الله عند المساء." },
+      { cat: "sleep", text: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا.", count: 1, benefit: "دعاء النوم وحفظ الروح." }
+    ];
+
+    // ----------------------------------------------------
+    // Render Functions
+    // ----------------------------------------------------
+    function renderSurahs(list) {
+      const container = document.getElementById("surahs-list-container");
+      container.innerHTML = list.map(s => `
+        <div class="item-box">
+          <div class="card-row-between">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge-tag green">#${s.id}</span>
+              <span style="font-weight:800; font-size:1rem; color:#fff;">سورة ${s.name}</span>
+            </div>
+            <span class="badge-tag gold">${s.type} • ${s.verses} آية</span>
+          </div>
+          <div style="font-size:0.75rem; color:#94a3b8; margin: 4px 0 10px;">
+            صفحة المصحف: ${s.page} • قراءة ترتيل برواية حفص عن عاصم
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:8px;">
+            <button style="background:var(--primary); color:#fff; border:none; padding:6px 14px; border-radius:8px; font-size:0.75rem; font-weight:700; cursor:pointer;" onclick="playAudio('${s.audio}', 'سورة ${s.name}', 'مشاري العفاسي')">▶ استماع</button>
+            <a href="${s.audio}" download style="background:rgba(255,255,255,0.06); color:#fff; text-decoration:none; padding:6px 12px; border-radius:8px; font-size:0.75rem; font-weight:700;">📥 تنزيل</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAcademy(subtab = 'prophets') {
+      const container = document.getElementById("academy-content-container");
+
+      if (subtab === 'hadiths') {
+        container.innerHTML = prophetHadiths.map(h => `
+          <div class="item-box">
+            <div class="card-row-between">
+              <span style="font-weight:800; color:#34d399; font-size:0.9rem;">${h.prophet}</span>
+              <span class="badge-tag gold">${h.source}</span>
+            </div>
+            <div class="ayah-text">« ${h.text} »</div>
+            <div style="font-size:0.75rem; color:#cbd5e1; margin-bottom:8px;"><strong>💡 الفائدة:</strong> ${h.benefit}</div>
+            <div class="card-row-between" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:8px;">
+              <span style="font-size:0.7rem; color:#94a3b8;">رواه: ${h.rawi}</span>
+              <button onclick="copyToClipboard('${h.prophet}: «${h.text}» [${h.source}]')" style="background:rgba(255,255,255,0.08); border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.7rem; cursor:pointer;">📋 نسخ الحديث</button>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = prophetStories.map(p => `
+          <div class="item-box">
+            <div class="card-row-between">
+              <span style="font-weight:800; color:#fff; font-size:0.95rem;">${p.name}</span>
+              <span class="badge-tag green">قصص الأنبياء</span>
+            </div>
+            <div style="font-size:0.75rem; color:#fbbf24; font-weight:600; margin:2px 0 6px;">${p.title}</div>
+            <div class="ayah-text">« ${p.ayah} »</div>
+            <p style="font-size:0.78rem; color:#94a3b8; line-height:1.6; margin-bottom:8px;">${p.desc}</p>
+            <div style="display:flex; justify-content:flex-end;">
+              <button onclick="copyToClipboard('${p.name}: ${p.desc}')" style="background:rgba(255,255,255,0.08); border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.7rem; cursor:pointer;">📋 نسخ القصة</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderAzkar(cat = 'morning') {
+      const container = document.getElementById("azkar-list-container");
+      const list = azkarData.filter(a => a.cat === cat);
+      container.innerHTML = list.map(a => `
+        <div class="item-box">
+          <div class="ayah-text">« ${a.text} »</div>
+          <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:8px;">💡 ${a.benefit}</div>
+          <div class="card-row-between" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:6px;">
+            <span class="badge-tag green">التكرار: ${a.count} مرة</span>
+            <button onclick="copyToClipboard('${a.text}')" style="background:rgba(255,255,255,0.08); border:none; color:#fff; padding:4px 10px; border-radius:6px; font-size:0.7rem; cursor:pointer;">📋 نسخ</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ----------------------------------------------------
+    // Navigation & Player Controls
+    // ----------------------------------------------------
+    function navigateTo(screenId, subOption = null) {
+      document.querySelectorAll(".view-screen").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+
+      const target = document.getElementById("screen-" + screenId);
+      if (target) target.classList.add("active");
+
+      const navBtn = document.getElementById("nav-" + screenId);
+      if (navBtn) navBtn.classList.add("active");
+
+      const titleMap = {
+        'home': 'ترتيل - الرئيسية',
+        'quran': 'المصحف الشريف',
+        'academy': 'الأكاديمية الإسلامية',
+        'hifz': 'اختبر حفظي',
+        'azkar': 'الأذكار وحصن المسلم',
+        'prayer': 'مواقيت الصلاة والقبلة'
+      };
+      document.getElementById("screen-header-title").innerText = titleMap[screenId] || 'ترتيل';
+
+      if (screenId === 'academy') {
+        switchAcademyTab(subOption || 'prophets');
+      }
+    }
+
+    function switchAcademyTab(tab) {
+      document.querySelectorAll(".subtab-pill").forEach(p => p.classList.remove("active"));
+      event?.target?.classList?.add("active");
+      renderAcademy(tab);
+    }
+
+    function filterAzkarCategory(cat) {
+      document.querySelectorAll("#screen-azkar .subtab-pill").forEach(p => p.classList.remove("active"));
+      event?.target?.classList?.add("active");
+      renderAzkar(cat);
+    }
+
+    function playAudio(url, title, sheikh) {
+      const bar = document.getElementById("mini-audio-bar");
+      const player = document.getElementById("audio-engine");
+      document.getElementById("player-title").innerText = title;
+      document.getElementById("player-sheikh").innerText = sheikh;
+      bar.style.display = "flex";
+      player.src = url;
+      player.play();
+    }
+
+    function closeAudio() {
+      const bar = document.getElementById("mini-audio-bar");
+      const player = document.getElementById("audio-engine");
+      player.pause();
+      bar.style.display = "none";
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('تم النسخ بنجاح!');
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast-msg");
+      t.innerText = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 2000);
+    }
+
+    function filterSurahs() {
+      const q = document.getElementById("quran-search-input").value.trim().toLowerCase();
+      renderSurahs(allSurahs.filter(s => s.name.includes(q) || s.en.toLowerCase().includes(q) || s.id.toString() === q));
+    }
+
+    // Initial Bootstrap
+    renderSurahs(allSurahs);
+    renderAcademy('prophets');
+    renderAzkar('morning');
+  </script>
 </body>
 </html>

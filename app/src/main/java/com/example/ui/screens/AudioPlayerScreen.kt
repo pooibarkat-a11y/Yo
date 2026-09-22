@@ -318,6 +318,7 @@ private fun AudioPlayerActiveTab(
                             SheikhAvatar(
                                 nameArabic = reciter.nameArabic,
                                 imageUrl = reciter.imageUrl,
+                                sheikhId = reciter.id,
                                 isSelected = true,
                                 size = 26.dp
                             )
@@ -904,6 +905,7 @@ private fun AudioRecitersLibraryTab(
                             SheikhAvatar(
                                 nameArabic = reciter.nameArabic,
                                 imageUrl = reciter.imageUrl,
+                                sheikhId = reciter.id,
                                 isSelected = isSelected,
                                 size = 50.dp
                             )
